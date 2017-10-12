@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+    clustering:
+        build: ./
+        container_name: clustering
+        command: python3 main.py
+        volumes:
+            - ./volume:/code
+
