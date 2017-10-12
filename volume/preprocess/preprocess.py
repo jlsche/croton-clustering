@@ -81,9 +81,13 @@ def preprocess(task):
 
 
 def read_role(path):
-    roles = pd.read_csv(path, names=['role'], squeeze=True, encoding='utf-8').tolist()
-    roles = [x[:-4] for x in roles]
-    return roles
+    try:
+        roles = pd.read_csv(path, names=['role'], squeeze=True, encoding='utf-8').tolist()
+        roles = [x[:-4] for x in roles]
+    except:
+        roles = []
+    finally:
+        return roles
 
 def read_raw(path): 
     df = pd.read_table(path, sep=',', encoding='utf-8')
