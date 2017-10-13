@@ -1,9 +1,11 @@
 # coding: utf-8
 import string
+from pathlib import Path
 
 #base_url = 'http://172.16.123.213'
 base_url = 'http://192.168.10.16'
-claude_url = '{}:{}/{}'.format(base_url, 3006, '')
+private_ip = 'http://172.16.123.197'
+claude_url = '{}:{}/{}'.format(private_ip, 3006, 'startClustering')
 controller_url = '{}:{}/{}'.format(base_url, 8011, 'jobs')
 data_baseurl = '{}:{}/{}/{}'.format(base_url, 8000, 'static', 'data')
 
@@ -16,13 +18,13 @@ role_filename = 'role.csv'
 pov_filename = 'pov.csv'
 stopwords_filename = 'stopwords.csv'
 
-data_path = './data'
+basepath = Path(__file__).resolve().parent
+data_path = '{}/{}'.format(str(basepath), 'data')
 rawdata_filepath = '{}/{}'.format(data_path, raw_filename)
-role_filepath = '{}/{}'.format(data_path, role_filename)
 pov_filepath = '{}/{}'.format(data_path, pov_filename)
 stopwords_filepath = '{}/{}'.format(data_path, stopwords_filename)
 
-result_path = './result'
+result_path = '{}/{}'.format(str(basepath), 'result')
 factory_path = '{}/{}'.format(result_path, 'factory')
 result_filepath = '{}/{}'.format(result_path, 'cluster_result.csv')
 

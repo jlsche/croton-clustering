@@ -12,11 +12,11 @@ from pathlib import Path
 class Preprocess:
     """
     """
-    def __init__(self, task):
-        self.initialize(task)
+    def __init__(self, task, role_filepath):
+        self.initialize(task, role_filepath)
 
-    def initialize(self, task):
-        if Path(role_filepath):
+    def initialize(self, task, role_filepath):
+        if Path(role_filepath).exists():
             jieba.load_userdict(role_filepath)
         else:
             print('No role file')
@@ -47,11 +47,13 @@ class Preprocess:
 
     
 
-def preprocess(task): 
+def preprocess(task, save_path): 
     print('\nReading raw files...', flush=True)
     rawdata_url = '{}/{}/{}'.format(data_baseurl, task, raw_filename)
     role_url = '{}/{}/{}'.format(data_baseurl, task, role_filename)
     pov_url = '{}/{}/{}'.format(data_baseurl, task, pov_filename)
+
+    role_filepath = '{}/{}'.format(save_path, role_filename) 
 
     # copy files to ./data
     resp = requests.get(role_url)
@@ -71,12 +73,12 @@ def preprocess(task):
     df = read_raw(rawdata_url)
     roles = read_role(role_filepath)
     stopwords = pd.read_csv(stopwords_filepath, names=['stopwords'], squeeze=True, encoding='utf-8')
-    print('done', flush=True)
+    print('Done reading all source files.', flush=True)
 
     print('Preprocessing data...', flush=True, end=' ')
-    handler = Preprocess(task)
+    handler = Preprocess(task, role_filepath)
     handler.fit(df, roles, stopwords)
-    print('done', flush=True)
+    print('Done preprocessing.', flush=True)
     return handler.df
 
 

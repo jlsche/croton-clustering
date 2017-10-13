@@ -1,4 +1,5 @@
 **/*.pyc
 **/__pycache__
 volume/result/factory/
+volume/data/role.csv
 
