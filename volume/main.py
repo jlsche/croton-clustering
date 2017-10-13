@@ -26,21 +26,15 @@ class Pipeline:
 
 if __name__ == '__main__':
     # request own instance id from Aliyun
-    #instance_id = requests.get('http://100.100.100.200/latest/meta-data/instance-id').content
-    #instance_id = instance_id.decode('utf-8')
-    instance_id = 'A54321'
+    instance_id = requests.get('http://100.100.100.200/latest/meta-data/instance-id').content
+    instance_id = instance_id.decode('utf-8')
 
-    '''
     # request to get task id
     start_time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
     resp = requests.post('{}/{}?{}={}'.format(controller_url, instance_id, 'start_time', start_time)).json()
     task_id = resp['id']
     cthr = resp['cthr']
     gthr = resp['gthr']
-    '''
-    task_id = '1108'
-    cthr = 0.9
-    gthr = 0.3
 
     pipeline = Pipeline(task=task_id, chunk_size=2000, preprocess_func=preprocess, clustering_func=clustering)
 
@@ -55,7 +49,6 @@ if __name__ == '__main__':
 
     # call Claude's API to start stage2 of clustering.
     _url = '{}?csvpath={}/{}&clusterthreshold={}&groupthreshold={}'.format(claude_url, factory_path, task_id, cthr, gthr)
-    print(_url)
-    #resp = requests.get(_url)
+    resp = requests.get(_url)
 
 

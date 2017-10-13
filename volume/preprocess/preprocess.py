@@ -95,7 +95,7 @@ def read_raw(path):
     df = pd.read_table(path, sep=',', encoding='utf-8')
     df = df.loc[:, ['text']]
     df['source'] = df.text.iloc[:]
-    df = df[:8000]
+    #df = df[:8000]
     return df
 
 def tokenize(text):
