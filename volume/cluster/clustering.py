@@ -13,18 +13,18 @@ def clustering(task_id, df, chunk_size, save_path):
 
     for role in df.role.unique():
         sub_df = df[df.role == role]
-        logger.info("Clustering character {}, comment count: {}".format(role, len(sub_df)))
+        logger.warn("Clustering character {}, comment count: {}".format(role, len(sub_df)))
         if len(sub_df) == 0:
             #print('skip', flush=True)
             continue
         # stage1
         chunks = assign_jobs(sub_df, chunk_size)
-        logger.info('Processing stage1 of {}, job count: {}'.format(role, len(chunks)))
+        logger.warn('Processing stage1 of {}, job count: {}'.format(role, len(chunks)))
         _clusters = start_job(role, 1, chunks, task_id)
 
         # stage2
         #chunks = assign_jobs(sub_df, chunk_size)
-        logger.info('Processing stage2 of {}, job count: {}'.format(role, len(_clusters)))
+        logger.warn('Processing stage2 of {}, job count: {}'.format(role, len(_clusters)))
         #_clusters = start_job(role, 2, chunks)
         _clusters = start_job(role, 2, _clusters, task_id)
 
@@ -37,7 +37,7 @@ def clustering(task_id, df, chunk_size, save_path):
         logger.warn('Processing stage3 of {}, done concate()'.format(role))
 
         chunks = assign_jobs(sub_df_typical, chunk_size)
-        logger.info('Processing stage3 of {}, job count: {}'.format(role, len(chunks)))
+        logger.warn('Processing stage3 of {}, job count: {}'.format(role, len(chunks)))
         clusters = start_job(role, 3, chunks, task_id)
 
         clusters = merge(clusters, typical_indexes, _clusters)

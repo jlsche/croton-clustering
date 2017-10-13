@@ -75,7 +75,7 @@ def preprocess(task, save_path):
     stopwords = pd.read_csv(stopwords_filepath, names=['stopwords'], squeeze=True, encoding='utf-8')
     print('Done reading all source files.', flush=True)
 
-    print('Preprocessing data...', flush=True, end=' ')
+    print('Preprocessing data...', flush=True)
     handler = Preprocess(task, role_filepath)
     handler.fit(df, roles, stopwords)
     print('Done preprocessing.', flush=True)
