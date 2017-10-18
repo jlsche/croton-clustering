@@ -20,7 +20,6 @@ stopwords_filename = 'stopwords.csv'
 
 basepath = Path(__file__).resolve().parent
 data_path = '{}/{}'.format(str(basepath), 'data')
-rawdata_filepath = '{}/{}'.format(data_path, raw_filename)
 pov_filepath = '{}/{}'.format(data_path, pov_filename)
 stopwords_filepath = '{}/{}'.format(data_path, stopwords_filename)
 

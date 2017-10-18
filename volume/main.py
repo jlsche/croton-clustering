@@ -13,13 +13,15 @@ class Pipeline:
         self.chunk_size = chunk_size
         self.preprocess_func = preprocess_func
         self.clustering_func = clustering_func
-        self.save_path = '{}/{}'.format(factory_path, task)
+        self.save_path = '{}/{}'.format(data_path, task)
+        self.factory_path = '{}/{}'.format(factory_path, task)
         Path(self.save_path).mkdir(exist_ok=True, parents=True)
+        Path(self.factory_path).mkdir(exist_ok=True, parents=True)
 
 
     def start(self):
         df = self.preprocess_func(self.task, self.save_path)
-        self.df_indice = self.clustering_func(self.task, df, self.chunk_size, self.save_path)
+        self.df_indice = self.clustering_func(self.task, df, self.chunk_size, self.factory_path)
         return self
 
 

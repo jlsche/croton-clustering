@@ -54,6 +54,7 @@ def preprocess(task, save_path):
     pov_url = '{}/{}/{}'.format(data_baseurl, task, pov_filename)
 
     role_filepath = '{}/{}'.format(save_path, role_filename) 
+    pov_filepath = '{}/{}'.format(save_path, pov_filename) 
 
     # copy files to ./data
     resp = requests.get(role_url)
