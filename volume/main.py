@@ -42,15 +42,18 @@ if __name__ == '__main__':
 
     pipeline.start()
     
-    #concat_csv_files(pipeline.factory_path, result_filepath)
-
     # update status to redis
     end_time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
-    req = '{}/{}?action={}&end_time={}'.format(controller_url, task_id, 'check', end_time)
+    req = '{}/{}?action=check&end_time={}'.format(controller_url, task_id, end_time)
     resp = requests.put(req)
 
     # call Claude's API to start stage2 of clustering.
-    _url = '{}?csvpath={}/{}&clusterthreshold={}&groupthreshold={}'.format(claude_url, factory_path, task_id, cthr, gthr)
+    _url = '{}?csvpath={}/{}&clusterthreshold={}&groupthreshold={}'.format(claude_url, actual_path, task_id, cthr, gthr)
     resp = requests.get(_url)
+
+    #end_time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
+    #_url = '{}/{}?action=checkout&end_time={}'.format(controller_url, task_id, end_time)
+    #requests.put(_url)
+
 
 

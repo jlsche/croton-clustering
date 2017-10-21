@@ -25,6 +25,7 @@ stopwords_filepath = '{}/{}'.format(data_path, stopwords_filename)
 
 result_path = '{}/{}'.format(str(basepath), 'result')
 factory_path = '{}/{}'.format(result_path, 'factory')
+actual_path = '/home/lingtelli/workspace/docker/croton-clustering/volume/result/factory'
 result_filepath = '{}/{}'.format(result_path, 'cluster_result.csv')
 
 
