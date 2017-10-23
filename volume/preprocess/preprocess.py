@@ -54,6 +54,7 @@ def preprocess(task, save_path):
     pov_url = '{}/{}/{}'.format(data_baseurl, task, pov_filename)
 
     role_filepath = '{}/{}'.format(save_path, role_filename) 
+    role_save_path = '{}/{}'.format(save_path, '_role.csv')
     pov_filepath = '{}/{}'.format(save_path, pov_filename) 
 
     # copy files to ./data
@@ -72,31 +73,43 @@ def preprocess(task, save_path):
         print('Error reading pov.csv. Please make sure there is one.')
 
     df = read_raw(rawdata_url)
-    roles = read_role(role_filepath)
+    roles = read_role(role_filepath, role_save_path)
     stopwords = pd.read_csv(stopwords_filepath, names=['stopwords'], squeeze=True, encoding='utf-8')
     print('Done reading all source files.', flush=True)
 
     print('Preprocessing data...', flush=True)
-    handler = Preprocess(task, role_filepath)
+    handler = Preprocess(task, role_save_path)
     handler.fit(df, roles, stopwords)
     print('Done preprocessing.', flush=True)
     return handler.df
 
 
-def read_role(path):
+def read_role(path, save_path):
     try:
-        roles = pd.read_csv(path, names=['role'], squeeze=True, encoding='utf-8').tolist()
-        roles = [x[:-4] for x in roles]
-    except:
-        roles = []
-    finally:
-        return roles
+        with open(path, encoding='utf-8') as handle:
+            content = handle.readlines()
+    except FileNotFoundError:
+        return []
+
+    roles = []
+    role = {}
+    rows = [x.strip() for x in content]
+    for line in rows:
+        names = line.split(' ')
+        roles.extend(names)
+        key = names[0]
+        alias = names[0:]
+        role[key] = alias
+
+    df = pd.DataFrame({'role': roles, 'weight': 100})
+    df.to_csv(save_path, sep=' ', index=False, header=False, encoding='utf-8')
+    return role
 
 def read_raw(path): 
     df = pd.read_table(path, sep=',', encoding='utf-8')
     df = df.loc[:, ['text']]
     df['source'] = df.text.iloc[:]
-    df = df[:6000]
+    df = df[:10000]
     return df
 
 def tokenize(text):
@@ -128,18 +141,20 @@ def get_role(tokens, roles):
         
         Input:
             tokens: tokenized text, list.
-            roles: character names, list.
+            roles: character names, dict of list.
         Returns:
             _: role name (or multiple, zero), str.
     """
-    role_appear = [role in tokens for role in roles]
+    _roles = [x for names in roles.values() for x in names]
+    role_appear = [role in tokens for role in _roles]
     role_count = role_appear.count(True)
 
     if role_count == 0:
         return 'zero'
     elif role_count == 1:
         index = role_appear.index(True)
-        return roles[index]
+        role = _roles[index]
+        return next((k for k, vals in roles.items() for v in vals if v == role), None)
     else:
         return 'multiple'
 
