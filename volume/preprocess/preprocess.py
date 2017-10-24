@@ -106,10 +106,9 @@ def read_role(path, save_path):
     return role
 
 def read_raw(path): 
-    df = pd.read_table(path, sep=',', encoding='utf-8')
-    df = df.loc[:, ['text']]
+    df = pd.read_csv(path, names=['text'], encoding='utf-8')
     df['source'] = df.text.iloc[:]
-    df = df[:10000]
+    df = df[:1000001]
     return df
 
 def tokenize(text):
