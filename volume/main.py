@@ -33,7 +33,7 @@ if __name__ == '__main__':
 
     # request to get task id
     start_time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
-    resp = requests.post('{}/{}?{}={}'.format(controller_url, instance_id, 'start_time', start_time)).json()
+    resp = requests.post('{}/{}?{}={}'.format(controller_url, instance_id, 'start', start_time)).json()
     task_id = resp['id']
     cthr = resp['cthr']
     gthr = resp['gthr']
@@ -44,7 +44,7 @@ if __name__ == '__main__':
     
     # update status to redis
     end_time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
-    req = '{}/{}?action=check&end_time={}'.format(controller_url, task_id, end_time)
+    req = '{}/{}?action=check&end={}'.format(controller_url, task_id, end_time)
     resp = requests.put(req)
 
     #'''
@@ -54,7 +54,7 @@ if __name__ == '__main__':
     #'''
     '''
     end_time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
-    _url = '{}/{}?action=checkout&end_time={}'.format(controller_url, task_id, end_time)
+    _url = '{}/{}?action=checkout&end={}'.format(controller_url, task_id, end_time)
     requests.put(_url)
     '''
 
