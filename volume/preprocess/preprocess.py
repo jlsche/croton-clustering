@@ -3,6 +3,7 @@
 from config import *
 
 import re
+import csv
 import emoji
 import jieba
 import requests
@@ -106,7 +107,7 @@ def read_role(path, save_path):
     return role
 
 def read_raw(path): 
-    df = pd.read_csv(path, names=['text'], encoding='utf-8')
+    df = pd.read_csv(path, names=['text'], quoting=csv.QUOTE_NONE, encoding='utf-8')
     df['source'] = df.text.iloc[:]
     df = df[:1000001]
     return df
@@ -133,7 +134,10 @@ def remove_stopwords(tokens, stopwords):
     return [x for x in tokens if x not in stopwords]
 
 def remove_star_score(text):
-    return text.replace('[星星]', '').replace('[半星]', '')
+    try:
+        return text.replace('[星星]', '').replace('[半星]', '')
+    except:
+        return text
 
 def get_role(tokens, roles):
     """ Get roles appear in text. 
