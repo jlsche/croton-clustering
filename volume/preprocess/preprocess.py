@@ -86,32 +86,20 @@ def preprocess(task, save_path):
 
 
 def read_role(path, save_path):
-    try:
-        with open(path, encoding='utf-8') as handle:
-            content = handle.readlines()
-    except FileNotFoundError:
-        return []
+    df = pd.read_csv(path, header=None) 
 
-    roles = []
-    role = {}
-    rows = [x.strip() for x in content]
-    rows = [x.replace('\ufeff', '') for x in rows]
-    for line in rows:
-        names = line.split(' ')
-        roles.extend(names)
-        key = names[0]
-        alias = names[0:]
-        role[key] = alias
+    roles = [x for names in df.values.tolist() for x in names if not isinstance(x, float)]
+    _df = pd.DataFrame({'role': roles, 'weight': 100})
+    _df.to_csv(save_path, sep=' ', index=False, header=False, encoding='utf-8')
 
-    df = pd.DataFrame({'role': roles, 'weight': 100})
-    df.to_csv(save_path, sep=' ', index=False, header=False, encoding='utf-8')
+    role = {names[0]: [x for x in names if not isinstance(x, float)] for names in df.values.tolist()}
     return role
 
 def read_raw(path): 
     df = pd.read_csv(path, names=['text'], quoting=csv.QUOTE_ALL, encoding='utf-8')
     df.text = df.text.astype(str)
     df['source'] = df.text.iloc[:]
-    df = df[:1000001]
+    df = df[:1001000]
     return df
 
 def tokenize(text):
