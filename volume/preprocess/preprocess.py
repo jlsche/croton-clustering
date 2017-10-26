@@ -95,6 +95,7 @@ def read_role(path, save_path):
     roles = []
     role = {}
     rows = [x.strip() for x in content]
+    rows = [x.replace('\ufeff', '') for x in rows]
     for line in rows:
         names = line.split(' ')
         roles.extend(names)
@@ -107,7 +108,7 @@ def read_role(path, save_path):
     return role
 
 def read_raw(path): 
-    df = pd.read_csv(test_raw_path, names=['text'], quoting=csv.QUOTE_NONE, encoding='utf-8')
+    df = pd.read_csv(path, names=['text'], quoting=csv.QUOTE_ALL, encoding='utf-8')
     df.text = df.text.astype(str)
     df['source'] = df.text.iloc[:]
     df = df[:1000001]
