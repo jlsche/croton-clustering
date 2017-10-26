@@ -107,7 +107,8 @@ def read_role(path, save_path):
     return role
 
 def read_raw(path): 
-    df = pd.read_csv(path, names=['text'], quoting=csv.QUOTE_NONE, encoding='utf-8')
+    df = pd.read_csv(test_raw_path, names=['text'], quoting=csv.QUOTE_NONE, encoding='utf-8')
+    df.text = df.text.astype(str)
     df['source'] = df.text.iloc[:]
     df = df[:1000001]
     return df
@@ -123,9 +124,12 @@ def remove_punctuations(text, punctuations):
         Returns:
             _: processed text, str.
     """
-    text = text.replace("\n", "").replace("\r", "")
-    no_punc = text.translate(str.maketrans(punctuations, ' ' * len(punctuations)))
-    return re.sub('[ a-zA-Z0-9]', '', no_punc)
+    if not isinstance(text, float):
+        text = text.replace("\n", "").replace("\r", "")
+        no_punc = text.translate(str.maketrans(punctuations, ' ' * len(punctuations)))
+        return re.sub('[ a-zA-Z0-9]', '', no_punc)
+    else:
+        return re.sub('[ a-zA-Z0-9]', '', text)
 
 def remove_emoji(tokens):
     return [x for x in tokens if x not in emoji.UNICODE_EMOJI]
@@ -134,9 +138,9 @@ def remove_stopwords(tokens, stopwords):
     return [x for x in tokens if x not in stopwords]
 
 def remove_star_score(text):
-    try:
+    if not isinstance(text, float):
         return text.replace('[星星]', '').replace('[半星]', '')
-    except:
+    else:
         return text
 
 def get_role(tokens, roles):
