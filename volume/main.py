@@ -47,8 +47,14 @@ if __name__ == '__main__':
     req = '{}/{}?action=check&end={}'.format(controller_url, task_id, end_time)
     resp = requests.put(req)
 
+    import time
+    time.sleep(60)
+
     #'''
     # call Claude's API to start stage2 of clustering.
+    private_ip = requests.get('http://100.100.100.200/latest/meta-data/private-ipv4').content
+    private_ip = private_ip.decode('utf-8')
+    claude_url = 'http://{}:3006/startClustering'.format(private_ip, 3006, 'startClustering')
     _url = '{}?csvpath={}/{}&clusterthreshold={}&groupthreshold={}'.format(claude_url, actual_path, task_id, cthr, gthr)
     resp = requests.get(_url)
     #'''

@@ -4,8 +4,6 @@ from pathlib import Path
 
 base_url = 'http://172.16.124.42'
 #base_url = 'http://192.168.10.16'
-private_ip = 'http://172.16.123.197'
-claude_url = '{}:{}/{}'.format(private_ip, 3006, 'startClustering')
 controller_url = '{}:{}/{}'.format(base_url, 8011, 'jobs')
 data_baseurl = '{}:{}/{}/{}'.format(base_url, 8000, 'static', 'data')
 
