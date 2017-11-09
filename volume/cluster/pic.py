@@ -120,5 +120,5 @@ def start_pic(role, stage, patch_idx, df, task_id):
         return [_df.iloc[np.where(pic.labels_ == i)] for i in np.unique(pic.labels_)]
     except Exception as ex:
         print(repr(ex))
-        pass
+        return [df.loc[:]]
 
