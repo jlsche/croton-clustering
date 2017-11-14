@@ -55,7 +55,7 @@ if __name__ == '__main__':
     private_ip = requests.get('http://100.100.100.200/latest/meta-data/private-ipv4').content
     private_ip = private_ip.decode('utf-8')
     claude_url = 'http://{}:3006/startClustering'.format(private_ip)
-    _url = '{}?csvpath={}/{}&clusterthreshold={}&groupthreshold={}'.format(claude_url, actual_path, task_id, cthr, gthr)
+    _url = '{}?csvpath={}/{}&clusterthreshold={}&groupthreshold={}&instance={}'.format(claude_url, actual_path, task_id, cthr, gthr, instance_id)
     resp = requests.get(_url)
     #'''
     '''
